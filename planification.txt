@@ -13,9 +13,12 @@ Méduse
 	private boolean partieCommencee;
 	private boolean touchePlateforme;
 	private boolean direction;
-	private int image;
+	private int image; // [1,6]
 	private double x, y;
 
 Plateformes
+	protected double y;
+	protected double x1, x2;
+	protected int type; //[1,4]
 
 Bulles
