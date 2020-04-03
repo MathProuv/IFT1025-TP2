@@ -2,11 +2,13 @@
 High Sea Tower
 
 Classes de jeu:
+
 	Vue
 	Contrôleur
 	Modèle
 
 Classes d'objets:
+
 	Méduse
 	Plateformes
 		4 types
