@@ -1,1 +1,21 @@
-Blabla
+
+Vue
+
+
+Controleur
+
+
+Modèle
+
+
+
+Méduse
+	private boolean partieCommencee;
+	private boolean touchePlateforme;
+	private boolean direction;
+	private int image;
+	private double x, y;
+
+Plateformes
+
+Bulles
