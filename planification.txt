@@ -19,6 +19,7 @@ Méduse
 Plateformes
 	protected double y;
 	protected double x1, x2;
-	protected int type; //[1,4]
+	protected int type; // [1,4]
 
 Bulles
+	private double x, y;
