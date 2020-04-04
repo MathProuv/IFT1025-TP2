@@ -1,11 +1,24 @@
 
 Vue
+	Bulles
+	méduse
+	plateforme
+	niveau qui scrolle
+	points
 
 
 Controleur
+	Saut
+	déplacement latéral
+	mode controle	
 
 
 Modèle
+	Calcul de la nouvelle position de la méduse en fonction du saut, du rebond et du déplacement latéral
+	Calcul des points
+	Mort
+	Mode controle
+	Faire avancer la limite du fond
 
 
 
