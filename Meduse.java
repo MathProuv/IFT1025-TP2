@@ -12,6 +12,8 @@ public class Meduse{ //extend Modele
 	 * entier entre 1 et 6 inclus qui indique quelle image est en cours
 	 */
 	private int image;
+	
+	private double vx, vy, ax, ay;
 
 	/** 
 	 * Constructeur
