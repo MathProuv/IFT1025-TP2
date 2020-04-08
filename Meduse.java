@@ -1,26 +1,29 @@
+import javafx.scene.image.Image;
+
 /**
  *@author Augustine Poirier et Mathilde Prouvost
  */
 public class Meduse{ //extend Modele
 
-	private boolean partieCommencee;
-	/**
-	 * indique true=vers la droite, flase=vers la gauche
-	 */
-	private boolean direction;
-	/**
-	 * entier entre 1 et 6 inclus qui indique quelle image est en cours
-	 */
-	private int image;
-	
-	private double vx, vy, ax, ay;
+    private boolean partieCommencee;
+    /**
+     * true=vers la droite, flase=vers la gauche
+     */
+    private boolean direction;
+    private Image image;
 
-	/** 
-	 * Constructeur
-	 */
-	public Meduse(){
-		this.partieCommencee = false;
-		this.direction = true;
-		this.image = 1;
-	}
+    private double vx, vy, ax, ay;
+
+    /**
+     * Constructeur
+     */
+    public Meduse(){
+        this.partieCommencee = false;
+        this.direction = true;
+        this.image = new Image("/images/jellyfish1.png");
+    }
+
+    public Image getImage() {
+        return this.image;
+    }
 }
