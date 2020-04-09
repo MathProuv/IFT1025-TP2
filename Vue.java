@@ -17,12 +17,12 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+/**
+ * @author Mathilde Prouvost et Augustine Poirier
+ */
 public class Vue extends Application {
     private int width = 350, height = 480;
-//*******************************
-    private Integer score;
-    private Meduse meduse;
-//*******************************
+
     private Controleur controleur;
 
     public static void main(String[] args) {
@@ -31,11 +31,7 @@ public class Vue extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //**************************
-        this.meduse = new Meduse();
-        this.score = 0;
-        //**************************
-        this.controleur = new Controleur(this);
+        this.controleur = new Controleur();
 
         BorderPane root = new BorderPane();
 
@@ -43,8 +39,6 @@ public class Vue extends Application {
 
         Canvas canvas = new Canvas(width, height);
         root.getChildren().add(canvas);
-
-        Jeu jeu = new Jeu();
 
         scene.setOnKeyPressed(e -> {
             switch (e.getCode()){
@@ -69,51 +63,25 @@ public class Vue extends Application {
 
         GraphicsContext context = canvas.getGraphicsContext2D();
 
-        //****************************************
-        double frameRateMeduse = 8 * 1e-9;
-
-        // Méduse
-        Image[] frames = new Image[]{
-                new Image("/images/jellyfish1.png"),
-                new Image("/images/jellyfish2.png"),
-                new Image("/images/jellyfish3.png"),
-                new Image("/images/jellyfish4.png"),
-                new Image("/images/jellyfish5.png"),
-                new Image("/images/jellyfish6.png")
-        };
-        //****************************************
-
         AnimationTimer timer = new AnimationTimer() {
             private long startTime = 0;
             private long lastTime = 0;
 
             @Override
             public void handle(long now) {
-                if(startTime == 0) {
+                if(startTime == 0 || lastTime == 0) {
                     startTime = now;
+                    lastTime = now;
                     return;
                 }
 
                 double deltaT = now - startTime;
 
-                if (lastTime == 0) {
-                    lastTime = now;
-                    return;
-                }
-
                 double dt = (now - lastTime) * 1e-9;
 
                 context.clearRect(0, 0, width, height);
-                jeu.update(dt);
-                jeu.draw(context);
-
-                //********** dans draw de meduse
-                int frame = (int) (deltaT * frameRateMeduse);
-                Integer nb = frame;
-                Image img = frames[frame%frames.length];
-                context.clearRect(120,430,50,50);
-                context.drawImage(img, 120, 430, 50,50);
-                //**********
+                controleur.update(dt, deltaT);
+                controleur.draw(context);
 
                 lastTime = now;
             }
@@ -125,7 +93,7 @@ public class Vue extends Application {
         // Score
         HBox scoreBox = new HBox();
         scoreBox.setAlignment(Pos.CENTER);
-        Text texteScore = new Text(score.toString());
+        Text texteScore = new Text(controleur.jeu.getScore().toString());
         texteScore.setFont(Font.font(25));
         texteScore.setFill(Color.RED);
         scoreBox.getChildren().add(texteScore);
@@ -141,4 +109,3 @@ public class Vue extends Application {
         primaryStage.show();
     }
 }
-
