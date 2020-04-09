@@ -31,7 +31,7 @@ public class Vue extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.controleur = new Controleur();
+        this.controleur = new Jeu();
 
         BorderPane root = new BorderPane();
 
@@ -53,11 +53,22 @@ public class Vue extends Application {
                     controleur.sauter();
                     break;
                 case LEFT:
-                    controleur.bouger(false);
+                    controleur.tourner(false);
                     break;
                 case RIGHT:
-                    controleur.bouger(true);
+                    controleur.tourner(true);
                     break;
+            }
+        });
+        scene.setOnKeyReleased(e -> {
+            switch (e.getCode()){
+                case UP:
+                case SPACE:
+                    controleur.stopSaut();
+                    break;
+                case LEFT:
+                case RIGHT:
+                    controleur.stopTourn();
             }
         });
 
@@ -93,7 +104,7 @@ public class Vue extends Application {
         // Score
         HBox scoreBox = new HBox();
         scoreBox.setAlignment(Pos.CENTER);
-        Text texteScore = new Text(controleur.jeu.getScore().toString());
+        Text texteScore = new Text(controleur.getScore().toString() + " m");
         texteScore.setFont(Font.font(25));
         texteScore.setFill(Color.RED);
         scoreBox.getChildren().add(texteScore);
@@ -109,3 +120,4 @@ public class Vue extends Application {
         primaryStage.show();
     }
 }
+
