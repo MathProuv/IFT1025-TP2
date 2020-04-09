@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -68,11 +69,33 @@ public class Vue extends Application {
 
         GraphicsContext context = canvas.getGraphicsContext2D();
 
+        //****************************************
+        double frameRateMeduse = 8 * 1e-9;
+
+        // Méduse
+        Image[] frames = new Image[]{
+                new Image("/images/jellyfish1.png"),
+                new Image("/images/jellyfish2.png"),
+                new Image("/images/jellyfish3.png"),
+                new Image("/images/jellyfish4.png"),
+                new Image("/images/jellyfish5.png"),
+                new Image("/images/jellyfish6.png")
+        };
+        //****************************************
+
         AnimationTimer timer = new AnimationTimer() {
+            private long startTime = 0;
             private long lastTime = 0;
 
             @Override
             public void handle(long now) {
+                if(startTime == 0) {
+                    startTime = now;
+                    return;
+                }
+
+                double deltaT = now - startTime;
+
                 if (lastTime == 0) {
                     lastTime = now;
                     return;
@@ -83,6 +106,14 @@ public class Vue extends Application {
                 context.clearRect(0, 0, width, height);
                 jeu.update(dt);
                 jeu.draw(context);
+
+                //********** dans draw de meduse
+                int frame = (int) (deltaT * frameRateMeduse);
+                Integer nb = frame;
+                Image img = frames[frame%frames.length];
+                context.clearRect(120,430,50,50);
+                context.drawImage(img, 120, 430, 50,50);
+                //**********
 
                 lastTime = now;
             }
@@ -99,11 +130,6 @@ public class Vue extends Application {
         texteScore.setFill(Color.RED);
         scoreBox.getChildren().add(texteScore);
         root.setTop(scoreBox);
-
-        // Méduse
-        Pane pane = new Pane();
-        Image imgMeduse = meduse.getImage();
-        root.setCenter(pane);
         // *********************************************
 
         primaryStage.setScene(scene);
@@ -115,3 +141,4 @@ public class Vue extends Application {
         primaryStage.show();
     }
 }
+
