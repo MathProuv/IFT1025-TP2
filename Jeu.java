@@ -11,7 +11,7 @@ public class Jeu {
     private boolean commence;
     private boolean debug;
     private ArrayList<Plateforme> plateformes;
-    private boolean isRed = true;
+    boolean isRed = false;
     private double positionY;
 
     public Jeu() {
@@ -20,28 +20,22 @@ public class Jeu {
         this.score = 0;
         this.commence = false;
         this.debug = false;
-        this.plateformes = new ArrayList<Plateforme>();
         this.positionY = 0;
-        
-        for (int i = 0; i < heightF/espacement; i ++)
-            this.addPlateforme();
+        this.plateformes = new ArrayList<Plateforme>();
     }
 
     public ArrayList<Plateforme> getPlateforme() {
         return this.plateformes;
     }
 
-    public void changeDebug(){
-        this.debug = !this.debug;
-    }
-    
     public void addPlateforme() {
         double proba = Math.random() * 100;
         Random rand = new Random();
         int largeur = rand.nextInt((175 - 80) + 1) + 80;
         int positionX = rand.nextInt((widthF-largeur/2) - largeur/2) + largeur/2;
 
-        if (proba < 65 || (proba >= 95 && isRed)) { // si la plateforme précédente est solide, on crée une plateforme simple
+        if (proba < 65 || (proba >= 95 && isRed)) {
+            // si la plateforme précédente est solide, on crée une plateforme simple
             this.plateformes.add(new PlateformeSimple(positionX, positionY, largeur));
             isRed = false;
         } else if (proba < 80) {
@@ -54,13 +48,21 @@ public class Jeu {
             this.plateformes.add(new PlateformeSolide(positionX, positionY, largeur));
             isRed = true;
         }
+
         positionY += espacement;
     }
 
+    public void changeDebug(){
+        this.debug = !this.debug;
+    }
+
     public void update(double dt, double deltaT) {
-        modele.update(dt, deltaT, meduse, score);
-        if (positionY - score < heightF - 100) {
+        modele.update(dt, deltaT, meduse, score, plateformes);
+        if (positionY < score + heightF) {
             this.addPlateforme();
+        }
+        if (plateformes.size() > Math.floor(heightF/espacement) + 1) {
+            plateformes.remove(0);
         }
         score += 1;
     }
