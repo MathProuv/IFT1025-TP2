@@ -1,27 +1,11 @@
-import javafx.scene.canvas.GraphicsContext;
-
 public class Modele {
     private static int widthFenetre = 350, heightFenetre = 480;
     private static int tailleMeduse = 50;
 
 
-    public Modele(int width, int height) {
-        this.widthFenetre = width;
-        this.heightFenetre = height;
-    }
+    public Modele() { }
 
-    public void update(double dt, double deltaT, Meduse meduse, Integer score) {
-        meduse.update(dt, deltaT);
-        if (isInWall(meduse)) {
-            hitWall(meduse);
-        }
-    }
-
-    public void draw(GraphicsContext context, Meduse meduse, Integer score) {
-        meduse.draw(context, score);
-    }
-
-    public void sauter (Meduse meduse) {
+    public void sauter (Meduse meduse){
         meduse.sauter();
     }
 
