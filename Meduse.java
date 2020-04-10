@@ -8,6 +8,7 @@ public class Meduse{
     private Image image;
     private boolean direction;
     private double x, y, vx, vy, ax, ay;
+
     private double coefFrotY = 1;
     private double coefFrotX = 5;
 
@@ -64,7 +65,7 @@ public class Meduse{
     }
 
     public void draw(GraphicsContext context, double score){
-        double yFenetre = heightFenetre - tailleMeduse - this.y;
+        double yFenetre = heightFenetre - tailleMeduse - this.y + score;
         context.clearRect(x, yFenetre, tailleMeduse, tailleMeduse);
         context.drawImage(image, x, yFenetre, tailleMeduse, tailleMeduse);
     }
