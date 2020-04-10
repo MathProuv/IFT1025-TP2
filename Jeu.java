@@ -4,10 +4,12 @@ import java.util.Random;
 
 public class Jeu {
     private int widthF = 350, heightF = 480, espacement = 100;
+    private double aScroll = 2;
 
     private Modele modele;
     private Meduse meduse;
     private int score;
+    private double vScroll;
     private boolean commence;
     private boolean debug;
     private ArrayList<Plateforme> plateformes;
@@ -18,6 +20,7 @@ public class Jeu {
         this.modele = new Modele(widthF, heightF);
         this.meduse = new Meduse();
         this.score = 0;
+        this.vScroll = 50;
         this.commence = false;
         this.debug = false;
         this.positionY = 0;
@@ -64,7 +67,8 @@ public class Jeu {
         if (plateformes.size() > Math.floor(heightF/espacement) + 1) {
             plateformes.remove(0);
         }
-        score += 1;
+        vScroll += aScroll * dt;
+        score += (int)(vScroll * dt);
     }
 
     public void draw(GraphicsContext context){
