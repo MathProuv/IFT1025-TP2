@@ -17,6 +17,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.Control;
+
 /**
  * @author Mathilde Prouvost et Augustine Poirier
  */
@@ -31,7 +33,7 @@ public class Vue extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.controleur = new Jeu();
+        this.controleur = new Controleur();
 
         BorderPane root = new BorderPane();
 
@@ -64,7 +66,6 @@ public class Vue extends Application {
             switch (e.getCode()){
                 case UP:
                 case SPACE:
-                    controleur.stopSaut();
                     break;
                 case LEFT:
                 case RIGHT:
@@ -120,4 +121,3 @@ public class Vue extends Application {
         primaryStage.show();
     }
 }
-
