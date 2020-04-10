@@ -1,55 +1,71 @@
 import javafx.scene.canvas.GraphicsContext;
 
-/**
- * @author Mathilde Prouvost et Augustine Poirier
- */
-public class Jeu implements Controleur {
+public class Jeu {
+
+    private Modele modele;
     private Meduse meduse;
     private int score;
-    private boolean scroll; //false avant le debut de la partie et en mode debug
+    private boolean commence; //false avant le debut de la partie et en mode debug
+    private boolean debug;
 
-    public void changeScroll(){
-        this.scroll = !this.scroll;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public Jeu(){
+    public Jeu() {
+        this.modele = new Modele();
         this.meduse = new Meduse();
         this.score = 0;
-        this.scroll = false;
+        this.commence = false;
+        this.debug = false;
     }
 
-    public void update(double dt, double deltaT){
+    public void changeDebug(){
+        this.debug = !this.debug;
+    }
+
+    public void update(double dt, double deltaT) {
         meduse.update(dt, deltaT);
+
+        if (modele.isInWall(meduse)) {
+            modele.hitWall(meduse);
+        }
     }
 
     public void draw(GraphicsContext context){
         meduse.draw(context, score);
     };
 
-
     public void deboguer(){
-        System.out.println("debug " + this.scroll);
-        this.changeScroll();
-    }
-
-    public void sauter(){
-        System.out.println("Saute !");
-    }
-    public void stopSaut(){}
-
-    public void tourner(boolean direction){
-        if (direction)
-            System.out.println("droite");
-        else
-            System.out.println("gauche");
-        meduse.tourner(direction);
+        System.out.println("debug " + debug);
+        this.changeDebug();
     }
 
     public void stopTourn(){
         meduse.stopTourn();
+    }
+
+    public void tourner(boolean direction) {
+        modele.tourner(meduse, direction);
+    }
+
+    public void sauter() {
+        modele.sauter(meduse);
+    }
+
+    public Modele getModele() {
+        return modele;
+    }
+
+    public Meduse getMeduse() {
+        return meduse;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public boolean isCommence() {
+        return commence;
+    }
+
+    public boolean isDebug() {
+        return debug;
     }
 }
