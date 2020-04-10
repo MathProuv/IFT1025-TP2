@@ -8,7 +8,8 @@ public class Meduse{
     private Image image;
     private boolean direction;
     private double x, y, vx, vy, ax, ay;
-    private double coefFrot = 1;
+    private double coefFrotY = 1;
+    private double coefFrotX = 5;
 
     private static int widthFenetre = 350, heightFenetre = 480;
     private static int tailleMeduse = 50;
@@ -52,10 +53,12 @@ public class Meduse{
         else
             this.image = framesGauche[frame%framesGauche.length];
 
-        this.vx += ax * dt - coefFrot*vx*dt;
-        this.vy += ay * dt - coefFrot*vy*dt;
+        this.vx += ax * dt - coefFrotX*vx*dt;
+        this.vy += ay * dt - coefFrotY*vy*dt;
         this.x += vx * dt;
         this.y += vy * dt;
+
+        // à enlever pour mourir
         if (this.y<0)
             this.y = 0; //partie pas encore commencée
     }
@@ -70,6 +73,17 @@ public class Meduse{
         this.vy = 600;
     }
 
+    public void rebondir() {
+        this.vx *= -1;
+        this.direction = !this.direction;
+
+        if (this.x <= 0) {
+            this.x *= -1;
+        } else {
+            this.x = 2*widthFenetre - this.x - 2*tailleMeduse ;
+        }
+    }
+
     public void tourner(boolean direction){
         if (direction != this.direction) {
             this.direction = direction;
@@ -78,5 +92,13 @@ public class Meduse{
     }
     public void stopTourn(){
         ax = 0;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
     }
 }
