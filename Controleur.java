@@ -4,53 +4,46 @@ import javafx.scene.canvas.GraphicsContext;
  * @author Mathilde Prouvost et Augustine Poirier
  */
 public class Controleur  {
-    private Modele modele = new Modele();
-    private Meduse meduse;
-    private int score;
-    private boolean commence; //false avant le debut de la partie et en mode debug
-    private boolean debug;
 
-    public void changeDebug(){
-        this.debug = !this.debug;
-    }
+    Jeu jeu;
+    Modele modele;
 
-    public Integer getScore() {
-        return score;
-    }
 
     public Controleur(){
-        this.meduse = new Meduse();
-        this.score = 0;
-        this.commence = false;
-        this.debug = false;
+       this.jeu = new Jeu();
+       this.modele = new Modele();
     }
 
     public void update(double dt, double deltaT){
-        meduse.update(dt, deltaT);
+        jeu.update(dt, deltaT);
     }
 
     public void draw(GraphicsContext context){
-        meduse.draw(context, score);
+        jeu.draw(context);
     };
 
     public void deboguer(){
-        System.out.println("debug " + debug);
-        this.changeDebug();
+        //System.out.println("debug " + jeu.isDebug());
+        jeu.changeDebug();
     }
 
     public void sauter(){
-        modele.faireSauter(meduse);
+       jeu.sauter();
     }
 
     public void tourner(boolean direction){
-        if (direction)
-            System.out.println("droite");
-        else
-            System.out.println("gauche");
-        meduse.tourner(direction);
+        //if (direction)
+           //System.out.println("droite");
+        //else
+           //System.out.println("gauche");
+        jeu.tourner(direction);
     }
 
     public void stopTourn(){
-        meduse.stopTourn();
+        jeu.stopTourn();
+    }
+
+    public Integer getScore() {
+        return jeu.getScore();
     }
 }
