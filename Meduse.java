@@ -8,6 +8,7 @@ public class Meduse{
     private Image image;
     private boolean direction;
     private double x, y, vx, vy, ax, ay;
+    private double coefFrot = 1;
 
     private static int widthFenetre = 350, heightFenetre = 480;
     private static int tailleMeduse = 50;
@@ -51,8 +52,8 @@ public class Meduse{
         else
             this.image = framesGauche[frame%framesGauche.length];
 
-        this.vx += ax * dt;
-        this.vy += ay * dt;
+        this.vx += ax * dt - coefFrot*vx*dt;
+        this.vy += ay * dt - coefFrot*vy*dt;
         this.x += vx * dt;
         this.y += vy * dt;
         if (this.y<0)
@@ -65,6 +66,10 @@ public class Meduse{
         context.drawImage(image, x, yFenetre, tailleMeduse, tailleMeduse);
     }
 
+    public void sauter(){
+        this.vy = 600;
+    }
+
     public void tourner(boolean direction){
         if (direction != this.direction) {
             this.direction = direction;
@@ -73,6 +78,5 @@ public class Meduse{
     }
     public void stopTourn(){
         ax = 0;
-        vx = 0;
     }
 }
