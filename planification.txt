@@ -1,38 +1,9 @@
-
-Vue
-	Bulles
-	méduse
-	plateforme
-	niveau qui scrolle
-	points
-
-
-Controleur
-	Saut
-	déplacement latéral
-	mode controle	
-
-
-Modèle
-	Calcul de la nouvelle position de la méduse en fonction du saut, du rebond et du déplacement latéral
-	Calcul des points
-	Mort
-	Mode controle
-	Faire avancer la limite du fond
-
-
-
-Méduse
-	private boolean partieCommencee;
-	private boolean touchePlateforme;
-	private boolean direction;
-	private int image; // [1,6]
-	private double x, y;
-
-Plateformes
-	protected double y;
-	protected double x1, x2;
-	protected int type; // [1,4]
-
-Bulles
-	private double x, y;
+TODO
+- mode debug
+- régler le pb de scroll (caster score en double?)
+- régler le pb de plateforme
+- gérer tous les hitPlateforme
+- mort
+- 75% de hauteur à gérer
+- bulles
+- début de la partie
