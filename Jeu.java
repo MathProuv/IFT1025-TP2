@@ -1,15 +1,16 @@
 import javafx.scene.canvas.GraphicsContext;
 
 public class Jeu {
+    private int widthF = 350, heightF = 480;
 
     private Modele modele;
     private Meduse meduse;
     private int score;
-    private boolean commence; //false avant le debut de la partie et en mode debug
+    private boolean commence;
     private boolean debug;
 
     public Jeu() {
-        this.modele = new Modele();
+        this.modele = new Modele(widthF, heightF);
         this.meduse = new Meduse();
         this.score = 0;
         this.commence = false;
@@ -21,20 +22,12 @@ public class Jeu {
     }
 
     public void update(double dt, double deltaT) {
-        meduse.update(dt, deltaT);
-
-        if (modele.isInWall(meduse)) {
-            modele.hitWall(meduse);
-        }
+        modele.update(dt, deltaT, meduse, score);
+        score += 1;
     }
 
     public void draw(GraphicsContext context){
-        meduse.draw(context, score);
-    };
-
-    public void deboguer(){
-        System.out.println("debug " + debug);
-        this.changeDebug();
+        modele.draw(context, meduse, score);
     }
 
     public void stopTourn(){
