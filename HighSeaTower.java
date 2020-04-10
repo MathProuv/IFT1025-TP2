@@ -22,7 +22,7 @@ import javax.sound.sampled.Control;
 /**
  * @author Mathilde Prouvost et Augustine Poirier
  */
-public class Vue extends Application {
+public class HighSeaTower extends Application {
     private int width = 350, height = 480;
 
     private Controleur controleur;
