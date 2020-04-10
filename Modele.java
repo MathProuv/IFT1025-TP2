@@ -13,10 +13,16 @@ public class Modele {
         this.heightFenetre = height;
     }
 
-    public void update(double dt, double deltaT, Meduse meduse, Integer score) {
+    public void update(double dt, double deltaT, Meduse meduse, Integer score, ArrayList<Plateforme> plateformes) {
         meduse.update(dt, deltaT);
         if (isInWall(meduse)) {
             hitWall(meduse);
+        }
+
+        for (int i=0; i<plateformes.size(); i++) {
+            if (this.intersectsPlateforme(meduse, plateformes.get(i))) {
+                this.hitPlateforme(meduse, plateformes.get(i));
+            }
         }
     }
 
@@ -45,6 +51,7 @@ public class Modele {
 
 
     public boolean intersectsPlateforme(Meduse meduse, Plateforme plateforme) {
+        // TODO : CHANGER LES CONDITIONS ELLES FONCTIONNENT PAS
         boolean intersectOver = (meduse.getY() - plateforme.getY() < 5) //méduse et plateforme sont à la même hauteur
                 && (meduse.getVy() <= 0) //méduse tombe ou ne bouge pas
                 && (plateforme.getX() - plateforme.getLargeur()/2 <= meduse.getX())
@@ -62,13 +69,6 @@ public class Modele {
     }
 
     public void hitPlateforme(Meduse meduse, Plateforme plateforme) {
-        if (plateforme instanceof PlateformeSimple)
-            ((PlateformeSimple) plateforme).hitPlateforme(meduse);
-        if (plateforme instanceof PlateformeRebondissante)
-            ((PlateformeRebondissante) plateforme).hitPlateforme(meduse);
-        if (plateforme instanceof PlateformeSolide)
-            ((PlateformeSolide) plateforme).hitPlateforme(meduse);
-        if (plateforme instanceof PlateformeAccelerante)
-            ((PlateformeAccelerante) plateforme).hitPlateforme(meduse);
+        plateforme.hitPlateforme(meduse);
     }
 }
