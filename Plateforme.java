@@ -4,7 +4,7 @@ import java.util.Random;
 
 public abstract class Plateforme {
 
-    protected double x, y, vy, ay;
+    protected double x, y;
     Random rand = new Random();
     protected double hauteur = 10, largeur;
     Color color = new Color(0, 0, 1, 1.0);
@@ -14,16 +14,10 @@ public abstract class Plateforme {
     public Plateforme(double x, double y, double largeur) {
        this.x = x;
        this.y = y;
-       this.vy = 50;
-       this.ay = 2;
        this.largeur = largeur;
     }
 
 
-    public void update(double dt) {
-        this.vy += ay * dt - vy*dt;
-        this.y += vy * dt;
-    }
 
     public void draw(GraphicsContext context, double score) {
         double yFenetre = heightFenetre - hauteur - y + score;
@@ -32,4 +26,22 @@ public abstract class Plateforme {
         context.fillRect(xFenetre, yFenetre, largeur, hauteur);
     }
 
+    public double getY() { return this.y; }
+
+    public double getX() { return this.x; }
+
+    public double getLargeur() { return this.largeur; }
+
+    public double getHauteur() { return this.hauteur; }
+
+    public void hitPlateforme(Meduse meduse){
+        if (this instanceof PlateformeSimple)
+            meduse.setVy(0);
+        if (this instanceof PlateformeRebondissante);
+            //todo
+        if (this instanceof PlateformeSolide);
+            //todo
+        if (this instanceof PlateformeAccelerante);
+           //todo
+    }
 }
