@@ -1,9 +1,5 @@
 TODO
-- mode debug
-- régler le pb de scroll (caster score en double?)
-- régler le pb de plateforme
 - gérer tous les hitPlateforme
-- mort
-- 75% de hauteur à gérer
 - bulles
-- début de la partie
+- écran titre
+- son
