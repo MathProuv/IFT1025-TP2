@@ -1,5 +1,6 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 /**
  *@author Mathilde Prouvost et Augustine Poirier
@@ -8,7 +9,8 @@ public class Meduse{
     private Image image;
     private boolean direction;
     private double x, y, vx, vy, ax, ay;
-    private double coefFrotY = 1;
+
+    private double coefFrotY = 0;
     private double coefFrotX = 5;
 
     private static int widthFenetre = 350, heightFenetre = 480;
@@ -43,7 +45,7 @@ public class Meduse{
         this.vx = 0;
         this.vy = 0;
         this.ax = 0;
-        this.ay = -1200;
+        this.ay = 0;
     }
 
     public void update(double dt, double deltaT){
@@ -53,19 +55,19 @@ public class Meduse{
         else
             this.image = framesGauche[frame%framesGauche.length];
 
-        this.vx += ax * dt - coefFrotX*vx*dt;
-        this.vy += ay * dt - coefFrotY*vy*dt;
         this.x += vx * dt;
         this.y += vy * dt;
-
-        // à enlever pour mourir
-        if (this.y<0)
-            this.y = 0; //partie pas encore commencée
+        this.vx += ax * dt - coefFrotX*vx*dt;
+        this.vy += ay * dt - coefFrotY*vy*dt;
     }
 
-    public void draw(GraphicsContext context, double score){
-        double yFenetre = heightFenetre - tailleMeduse - this.y;
+    public void draw(GraphicsContext context, double score, boolean debug){
+        double yFenetre = heightFenetre - tailleMeduse - this.y + score;
         context.clearRect(x, yFenetre, tailleMeduse, tailleMeduse);
+        if (debug) {
+            context.setFill(Color.rgb(255, 0, 0, 0.5));
+            context.fillRect(x, yFenetre, tailleMeduse, tailleMeduse);
+        }
         context.drawImage(image, x, yFenetre, tailleMeduse, tailleMeduse);
     }
 
@@ -73,7 +75,7 @@ public class Meduse{
         this.vy = 600;
     }
 
-    public void rebondir() {
+    public void rebondirMur() {
         this.vx *= -1;
         this.direction = !this.direction;
 
@@ -94,11 +96,22 @@ public class Meduse{
         ax = 0;
     }
 
-    public double getX() {
-        return x;
-    }
+    public double getX() { return x; }
 
-    public double getY() {
-        return y;
-    }
+    public double getY() { return y; }
+
+    public void setY(double y) { this.y = y; }
+
+    public double getVy() { return this.vy; }
+
+    public double getVx() { return this.vx; }
+
+    public double getAx() { return this.ax; }
+
+    public double getAy() { return this.ay; }
+
+    public void setVy(double y) { this.vy = y; }
+
+    public void setAy(double y) { this.ay = y; }
+
 }
