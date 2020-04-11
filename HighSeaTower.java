@@ -63,6 +63,7 @@ public class HighSeaTower extends Application {
             }
         });
         scene.setOnKeyReleased(e -> {
+            controleur.commencer();
             switch (e.getCode()){
                 case UP:
                 case SPACE:
@@ -100,17 +101,6 @@ public class HighSeaTower extends Application {
         };
 
         timer.start();
-
-        // **********************************************
-        // Score
-        HBox scoreBox = new HBox();
-        scoreBox.setAlignment(Pos.CENTER);
-        Text texteScore = new Text(controleur.getScore().toString() + " m");
-        texteScore.setFont(Font.font(25));
-        texteScore.setFill(Color.RED);
-        scoreBox.getChildren().add(texteScore);
-        root.setTop(scoreBox);
-        // *********************************************
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("High Sea Tower");
