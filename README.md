@@ -11,5 +11,4 @@ Classes d'objets:
 
 	Méduse
 	Plateformes
-		4 types
 	Bulles
