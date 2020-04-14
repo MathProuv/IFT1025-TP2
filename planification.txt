@@ -1,5 +1,3 @@
 TODO
-- gérer tous les hitPlateforme
-- bulles
 - écran titre
 - son
