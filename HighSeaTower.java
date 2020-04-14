@@ -1,23 +1,13 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-import javax.sound.sampled.Control;
 
 /**
  * @author Mathilde Prouvost et Augustine Poirier
@@ -37,10 +27,30 @@ public class HighSeaTower extends Application {
 
         BorderPane root = new BorderPane();
 
-        Scene scene = new Scene(root, width, height, Color.BLUE);
+        Scene scene = new Scene(root, width, height, Color.rgb(0, 25, 99));
 
         Canvas canvas = new Canvas(width, height);
         root.getChildren().add(canvas);
+
+        AnimationTimer timerBulles = new AnimationTimer() {
+            private long startTime;
+            private int nbBulles;
+
+            @Override
+            public void handle(long now) {
+                if (startTime == 0) {
+                    startTime = now;
+                    return;
+                }
+
+                double deltaT = (now - startTime)*1e-9;
+
+                if (deltaT > nbBulles * 3) {
+                    controleur.creerBulles();
+                    nbBulles ++;
+                }
+            }
+        };
 
         scene.setOnKeyPressed(e -> {
             switch (e.getCode()){
@@ -52,12 +62,18 @@ public class HighSeaTower extends Application {
                     break;
                 case SPACE:
                 case UP:
+                    controleur.commencer();
+                    timerBulles.start();
                     controleur.sauter();
                     break;
                 case LEFT:
+                    controleur.commencer();
+                    timerBulles.start();
                     controleur.tourner(false);
                     break;
                 case RIGHT:
+                    controleur.commencer();
+                    timerBulles.start();
                     controleur.tourner(true);
                     break;
             }
@@ -100,17 +116,6 @@ public class HighSeaTower extends Application {
         };
 
         timer.start();
-
-        // **********************************************
-        // Score
-        HBox scoreBox = new HBox();
-        scoreBox.setAlignment(Pos.CENTER);
-        Text texteScore = new Text(controleur.getScore().toString() + " m");
-        texteScore.setFont(Font.font(25));
-        texteScore.setFill(Color.RED);
-        scoreBox.getChildren().add(texteScore);
-        root.setTop(scoreBox);
-        // *********************************************
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("High Sea Tower");

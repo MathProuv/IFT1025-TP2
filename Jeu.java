@@ -1,71 +1,140 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import java.util.ArrayList;
+import java.util.Random;
 
+/**
+ * @author Mathilde Prouvost et Augustine Poirier
+ */
 public class Jeu {
+    private int widthF = 350, heightF = 480, espacement = 100, tailleMeduse = 50;
+    private double aScroll = 2;
 
     private Modele modele;
     private Meduse meduse;
-    private int score;
-    private boolean commence; //false avant le debut de la partie et en mode debug
+    private double score;
+    private double vScroll;
+    private boolean commence;
     private boolean debug;
+    private ArrayList<Plateforme> plateformes;
+    private boolean isRed;
+    private double positionY;
+    private boolean isOnFloor;
 
     public Jeu() {
-        this.modele = new Modele();
+        this.modele = new Modele(widthF, heightF);
         this.meduse = new Meduse();
         this.score = 0;
+        this.vScroll = 50;
         this.commence = false;
         this.debug = false;
+        this.positionY = espacement; //position de la prochaine plateforme
+        this.isRed = true;
+        this.plateformes = new ArrayList<Plateforme>();
+        this.isOnFloor = true;
     }
+
+    public void commencer() {
+        commence = true;
+        meduse.setAy(-1200);
+    }
+
+    public ArrayList<Plateforme> getPlateforme() {
+        return this.plateformes;
+    }
+
+    public void addPlateforme() {
+        double proba = Math.random() * 100;
+
+        if (proba < 65 || (proba >= 95 && isRed)) {
+            // si la plateforme précédente est solide, on crée une plateforme simple
+            this.plateformes.add(new Plateforme(positionY, "simple"));
+            isRed = false;
+        } else if (proba < 80) {
+            this.plateformes.add(new Plateforme(positionY, "rebondissante"));
+            isRed = false;
+        } else if (proba < 95) {
+            this.plateformes.add(new Plateforme(positionY, "accélérante" ));
+            isRed = false;
+        } else {
+            this.plateformes.add(new Plateforme(positionY, "solide"));
+            isRed = true;
+        }
+        positionY += espacement;
+    }
+
 
     public void changeDebug(){
         this.debug = !this.debug;
     }
 
     public void update(double dt, double deltaT) {
-        meduse.update(dt, deltaT);
+        modele.update(dt, deltaT, this);
 
-        if (modele.isInWall(meduse)) {
-            modele.hitWall(meduse);
+        // on ajoute les plateformes au fur et à mesure de la montée
+        if (positionY < score + heightF) {
+            this.addPlateforme();
         }
+
+        // on retire les plateformes qui ne sont plus à l'écran
+        if (plateformes.size() > heightF/espacement + 1) {
+            plateformes.remove(0);
+        }
+
+        modele.scroll(dt,this, this.vScroll);
     }
 
     public void draw(GraphicsContext context){
-        meduse.draw(context, score);
-    };
+        modele.draw(context, this);
 
-    public void deboguer(){
-        System.out.println("debug " + debug);
-        this.changeDebug();
+        if (debug) {
+            context.setFill(Color.WHITE);
+            context.setFont(Font.font(14));
+            // position (x, y)
+            context.fillText("Position : (" + (int) meduse.getX() + ", " + (int) meduse.getY() + ")", 0, 14);
+            // v (x, y)
+            context.fillText("v = (" + (int) meduse.getVx() + ", " + (int) meduse.getVy() + ")", 0, 28);
+            // acceleration (x, y)
+            context.fillText("a = (" + (int) meduse.getAx() + ", " + (int) meduse.getAy() + ")", 0, 42);
+            // touche le sol : oui/non
+            context.fillText("Touche le sol : " + (isOnFloor ? "oui" : "non"), 0, 56);
+        }
+    }
+
+
+    public void tourner(boolean direction) {
+        modele.tourner(meduse, direction);
     }
 
     public void stopTourn(){
         meduse.stopTourn();
     }
 
-    public void tourner(boolean direction) {
-        modele.tourner(meduse, direction);
-    }
-
     public void sauter() {
-        modele.sauter(meduse);
+        if (isOnFloor)
+            modele.sauter(meduse);
     }
 
-    public Modele getModele() {
-        return modele;
-    }
+    public Modele getModele() { return modele; }
 
-    public Meduse getMeduse() {
-        return meduse;
-    }
+    public Meduse getMeduse() { return meduse; }
 
-    public Integer getScore() {
-        return score;
-    }
+    public double getScore() { return score; }
 
-    public boolean isCommence() {
-        return commence;
-    }
+    public boolean isCommence() { return commence; }
 
-    public boolean isDebug() {
-        return debug;
-    }
+    public boolean isDebug() { return debug; }
+
+    public void setIsOnFloor(boolean isOnFloor) { this.isOnFloor = isOnFloor; }
+
+    public boolean getIsOnFloor() { return this.isOnFloor; }
+
+    public double getVScroll() { return this.vScroll; }
+
+    public double getAScroll() { return this.aScroll; }
+
+    public void setVScroll(double vScroll) { this.vScroll = vScroll; }
+
+    public void setScore(double score) { this.score = score; }
 }
