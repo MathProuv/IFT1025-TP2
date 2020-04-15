@@ -12,24 +12,26 @@ import javafx.stage.Stage;
 /**
  * @author Mathilde Prouvost et Augustine Poirier
  */
-public class HighSeaTower extends Application {
-    private int width = 350, height = 480;
 
-    private Controleur controleur;
+public class HighSeaTower extends Application {
+    private int widthF = 350, heightF = 480;
+
+    private Jeu controleur;
 
     public static void main(String[] args) {
         launch(args);
     }
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.controleur = new Controleur();
+        this.controleur = new Jeu(widthF, heightF);
 
         BorderPane root = new BorderPane();
 
-        Scene scene = new Scene(root, width, height, Color.rgb(0, 25, 99));
+        Scene scene = new Scene(root, widthF, heightF, Color.rgb(0, 25, 99));
 
-        Canvas canvas = new Canvas(width, height);
+        Canvas canvas = new Canvas(widthF, heightF);
         root.getChildren().add(canvas);
 
         AnimationTimer timerBulles = new AnimationTimer() {
@@ -45,9 +47,10 @@ public class HighSeaTower extends Application {
 
                 double deltaT = (now - startTime)*1e-9;
 
+                // les bulles sont crées à chaque 3 secondes à partir du début de la partie
                 if (deltaT > nbBulles * 3) {
                     controleur.creerBulles();
-                    nbBulles ++;
+                    nbBulles += 1;
                 }
             }
         };
@@ -55,13 +58,15 @@ public class HighSeaTower extends Application {
         scene.setOnKeyPressed(e -> {
             switch (e.getCode()){
                 case T:
-                    controleur.deboguer();
+                    controleur.changeDebug();
                     break;
                 case ESCAPE:
                     Platform.exit();
                     break;
                 case SPACE:
                 case UP:
+                    // on appelle commencer pour que l'accélération en y de la méduse
+                    // reste de -1200 et pour que commence reste true
                     controleur.commencer();
                     timerBulles.start();
                     controleur.sauter();
@@ -107,7 +112,7 @@ public class HighSeaTower extends Application {
 
                 double dt = (now - lastTime) * 1e-9;
 
-                context.clearRect(0, 0, width, height);
+                context.clearRect(0, 0, widthF, heightF);
                 controleur.update(dt, deltaT);
                 controleur.draw(context);
 
