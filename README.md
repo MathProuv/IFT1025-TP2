@@ -1,4 +1,4 @@
-# IFT1025-TP1
+# IFT1025-TP2
 High Sea Tower
 
 Classes de jeu:
