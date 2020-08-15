@@ -3,12 +3,12 @@ High Sea Tower
 
 Classes de jeu:
 
-	Vue
-	Contrôleur
-	Modèle
+	Vue (HighSeaTower)
+	Contrôleur (Jeu)
+	Modèle (Modele)
 
 Classes d'objets:
 
 	Méduse
-	Plateformes
+	Plateforme
 	Bulles
