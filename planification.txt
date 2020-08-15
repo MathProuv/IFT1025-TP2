@@ -1,4 +1,0 @@
-TODO
-- écran titre
-- son
-- pitit bug avec la création des bulles
